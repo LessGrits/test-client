@@ -1,38 +1,96 @@
-.App {
-  text-align: center;
+*{
+    font-family:sans-serif ;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1,h2,h3,h4,h5,h6{
+    font-weight: bold;
+    font-size: 18px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App{
+    padding-top:50px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.5);
+}
+.logo img{
+    max-width: 100px;
 }
 
-.App-link {
-  color: #61dafb;
+button.new-hotdog{
+    font-size: 20px;
+    padding: 10px 5px;
+    transition: .5s;
+    border: 2px solid rgba(0,0,0,0.5);
+}
+button.new-hotdog:hover{
+    color:#fff;
+    background: rgba(0,0,0,0.5);
+    transition: .5s;
+    border: 1px solid transparent;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+
+
+main {
+    padding-top: 50px;
+    width: 90vw;
+    margin: 0 auto  ;
+}
+
+.main-content{
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+
+.hotdog{
+    width: 23%;
+    margin: 60px 1% 0;
+    min-width: 300px;
+    max-width: 400px;
+}
+
+.hotdog__img img{
+    width: 100%;
+}
+
+.hotdog__name{
+    padding: 10px 0;
+}
+
+.hotdog__price{
+    padding: 10px 3px;
+    font-size: 18px;
+    color:grey;
+}
+.hotdog__description{
+    line-height: 1.3em;
+    padding-bottom: 20px;;
+}
+.hotdog__edit-btn{
+    background: rgba(0,0,0,0.3);
+    width: 100%;
+    padding: 10px 0;
+    transition: .3s;
+}
+.hotdog__edit-btn:hover{
+    background: rgba(0,0,0,0.5);
+    color:#fff;
+    transition: .3s;
+}
+
+
+
+footer{
+    padding-top: 50px;
+    text-align: center;
 }
