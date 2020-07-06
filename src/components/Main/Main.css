@@ -1,0 +1,11 @@
+main {
+    padding-top: 50px;
+    width: 90vw;
+    margin: 0 auto  ;
+}
+
+.main-content{
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
