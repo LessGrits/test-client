@@ -9,7 +9,7 @@ const Main = () => {
 
   const getHotdogsList = async () => {
     try {
-      const response = await fetch("http://localhost:5000/hotdogs");
+      const response = await fetch("https://we-are-the-future-test-server.herokuapp.com/hotdogs");
       const jsonData = await response.json();
       setHotdogsList(jsonData)
     } catch (e) {
@@ -26,9 +26,10 @@ const Main = () => {
 
   };
 
-  const setItemValue = (itemWithNewValue, id) => {
-    const newList = hotdogsList.filter( hotdog => hotdog.hotdog_id !== id );
-    setHotdogsList([...newList, itemWithNewValue])
+  const setItemValue = (oldItem,itemWithNewValue, id) => {
+    console.log(hotdogsList.indexOf(oldItem))
+    // const newList = hotdogsList.filter( hotdog => hotdog.hotdog_id !== id );
+    // setHotdogsList([...newList, itemWithNewValue])
   };
 
   useEffect(() => {

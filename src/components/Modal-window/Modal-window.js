@@ -3,7 +3,7 @@ import "./Modal-window.css"
 
 const ModalWindow = ({addHotdogToState}) => {
 
-  const url = "http://localhost:5000/hotdogs";
+  const url = "https://we-are-the-future-test-server.herokuapp.com/hotdogs";
 
   const initialHotdogData = {
     name: "",
