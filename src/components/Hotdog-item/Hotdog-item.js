@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import './Hotdog-item.css';
 
-const HotdogItem = ({data:hotdogData, setItemValue, deleteHotdogFromState,}) => {
+const HotdogItem = ({data: hotdogData, setItemValue, deleteHotdogFromState,}) => {
 
   const [editMode, changeEditMode] = useState(false);
 
-  const {name, description, price, photo_url: photoUrl, hotdog_id:id } = hotdogData;
+  const {name, description, price, photo_url: photoUrl, hotdog_id: id} = hotdogData;
 
   const url = "https://we-are-the-future-test-server.herokuapp.com/hotdogs";
 
@@ -16,11 +16,11 @@ const HotdogItem = ({data:hotdogData, setItemValue, deleteHotdogFromState,}) => 
   };
 
   const deleteHotdog = async (id) => {
-    try{
-      const response = await fetch(`${url}/${id}`,{
+    try {
+      const response = await fetch(`${url}/${id}`, {
         method: "DELETE"
       });
-       deleteHotdogFromState(id);
+      deleteHotdogFromState(id);
     } catch (error) {
       console.error(error);
     }
@@ -28,16 +28,16 @@ const HotdogItem = ({data:hotdogData, setItemValue, deleteHotdogFromState,}) => 
 
   const updateHotdog = async (event, id) => {
     event.preventDefault();
-    try{
-      // const body = {...hotdogData};
-      // const response = await fetch(`${url}/${id}`,{
-      //   method: "PUT",
-      //   headers: {"Content-Type": "application/json"},
-      //   body: JSON.stringify(body)
-      // });
-      // console.log(body);
+    try {
+      const body = {...hotdogData};
+      const response = await fetch(`${url}/${id}`,{
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body)
+      });
+
       setEditMode();
-    } catch (error){
+    } catch (error) {
       console.error(error)
     }
   };
@@ -68,17 +68,20 @@ const HotdogItem = ({data:hotdogData, setItemValue, deleteHotdogFromState,}) => 
       <div className="hotdog__img">
         <img src={photoUrl || defaultPhoto} alt="hotdogPhoto"/>
       </div>
-      <form className="edit-form" onSubmit={ e=> updateHotdog(e, id)}>
+      <form className="edit-form" onSubmit={e => updateHotdog(e, id)}>
         <input type="text" value={photoUrl}
-               onChange={ e => setItemValue({...hotdogData, photo_url:e.target.value}, id )} />
-        <input type="text" value={name} onChange={ e => setItemValue(hotdogData, {...hotdogData, name:e.target.value}, id )}/>
-        <input type="text" value={price} onChange={ e => setItemValue({...hotdogData, price:e.target.value}, id )}/>
-        <input type="text" value={description} onChange={ e => setItemValue({...hotdogData, description:e.target.value}, id )}/>
-        <button type="submit" className="hotdog__btn" >
+               onChange={e => setItemValue(hotdogData, {...hotdogData, photo_url: e.target.value})}/>
+        <input type="text" value={name}
+               onChange={e => setItemValue(hotdogData, {...hotdogData, name: e.target.value})}/>
+        <input type="text" value={price}
+               onChange={e => setItemValue(hotdogData, {...hotdogData, price: e.target.value})}/>
+        <input type="text" value={description}
+               onChange={e => setItemValue(hotdogData, {...hotdogData, description: e.target.value})}/>
+        <button type="submit" className="hotdog__btn">
           Upgrade
         </button>
         <button type="button" className="hotdog__btn"
-                onClick={()=>deleteHotdog(id)}>
+                onClick={() => deleteHotdog(id)}>
           Delete
         </button>
       </form>

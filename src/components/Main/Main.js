@@ -18,7 +18,7 @@ const Main = () => {
   };
 
   const deleteHotdogFromState = (id) => {
-    setHotdogsList(hotdogsList.filter( hotdog => hotdog.hotdog_id !== id ));
+    setHotdogsList(hotdogsList.filter(hotdog => hotdog.hotdog_id !== id));
   };
 
   const addHotdogToState = (item) => {
@@ -26,10 +26,12 @@ const Main = () => {
 
   };
 
-  const setItemValue = (oldItem,itemWithNewValue, id) => {
-    console.log(hotdogsList.indexOf(oldItem))
-    // const newList = hotdogsList.filter( hotdog => hotdog.hotdog_id !== id );
-    // setHotdogsList([...newList, itemWithNewValue])
+  const setItemValue = (oldItem, itemWithNewValue) => {
+    const index = hotdogsList.indexOf(oldItem);
+    const itemsBefore = hotdogsList.slice(0, index);
+    const itemsAfter = hotdogsList.slice(index + 1);
+    const newList = [...itemsBefore, itemWithNewValue, ...itemsAfter];
+    setHotdogsList([...newList])
   };
 
   useEffect(() => {
@@ -41,14 +43,14 @@ const Main = () => {
     <main>
       <h1>All hot-dogs</h1>
       <section className="main-content">
-        {hotdogsList.map((data)=>(
-          <HotdogItem data = {data}
+        {hotdogsList.map((data) => (
+          <HotdogItem data={data}
                       key={data.hotdog_id}
-                      deleteHotdogFromState = {deleteHotdogFromState}
-                      setHotdogsList = {setHotdogsList}
-                      setItemValue = {setItemValue}
-        />))}
-        <ModalWindow addHotdogToState = {addHotdogToState}/>
+                      deleteHotdogFromState={deleteHotdogFromState}
+                      setHotdogsList={setHotdogsList}
+                      setItemValue={setItemValue}
+          />))}
+        <ModalWindow addHotdogToState={addHotdogToState}/>
       </section>
     </main>
   )
