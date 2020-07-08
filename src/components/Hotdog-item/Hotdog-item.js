@@ -69,11 +69,11 @@ const HotdogItem = ({data: hotdogData, setItemValue, deleteHotdogFromState,}) =>
         <img src={photoUrl || defaultPhoto} alt="hotdogPhoto"/>
       </div>
       <form className="edit-form" onSubmit={e => updateHotdog(e, id)}>
-        <input type="text" value={photoUrl}
+        <input type="text"  value={photoUrl}
                onChange={e => setItemValue(hotdogData, {...hotdogData, photo_url: e.target.value})}/>
-        <input type="text" value={name}
+        <input type="text" required value={name}
                onChange={e => setItemValue(hotdogData, {...hotdogData, name: e.target.value})}/>
-        <input type="text" value={price}
+        <input type="text" required value={price}
                onChange={e => setItemValue(hotdogData, {...hotdogData, price: e.target.value})}/>
         <input type="text" value={description}
                onChange={e => setItemValue(hotdogData, {...hotdogData, description: e.target.value})}/>

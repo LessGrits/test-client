@@ -19,11 +19,12 @@ const Main = () => {
 
   const deleteHotdogFromState = (id) => {
     setHotdogsList(hotdogsList.filter(hotdog => hotdog.hotdog_id !== id));
+    console.log(`Deleted hotdog by id ${ id }`)
   };
 
   const addHotdogToState = (item) => {
     setHotdogsList([...hotdogsList, item]);
-
+    console.log(`Added hotdog ${JSON.stringify(item)}`)
   };
 
   const setItemValue = (oldItem, itemWithNewValue) => {
@@ -31,7 +32,8 @@ const Main = () => {
     const itemsBefore = hotdogsList.slice(0, index);
     const itemsAfter = hotdogsList.slice(index + 1);
     const newList = [...itemsBefore, itemWithNewValue, ...itemsAfter];
-    setHotdogsList([...newList])
+    setHotdogsList([...newList]);
+    console.log(`Setted new value ${JSON.stringify(itemWithNewValue)}`)
   };
 
   useEffect(() => {

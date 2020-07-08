@@ -25,7 +25,7 @@ const ModalWindow = ({addHotdogToState}) => {
       });
 
       addHotdogToState(hotdogData);
-      window.location = '/';
+      window.location = 'https://lessgrits.github.io/test-client/';
 
     } catch (error) {
       console.error(error);
@@ -43,6 +43,16 @@ const ModalWindow = ({addHotdogToState}) => {
             </div>
             <div className="modal-body">
               <input className="modal-input"
+                     placeholder="Image"
+                     type="text"
+                     value={hotdogData.photoUrl}
+                     onChange={
+                       e => setHotdogData({
+                         ...hotdogData,
+                         photoUrl: e.target.value
+                       })}/>
+              <input className="modal-input"
+                     required
                      placeholder="Name"
                      type="text"
                      value={hotdogData.name}
@@ -52,6 +62,7 @@ const ModalWindow = ({addHotdogToState}) => {
                          name: e.target.value
                        })}/>
               <input className="modal-input"
+                     required
                      placeholder="Price"
                      type="number"
                      value={hotdogData.price}
@@ -68,15 +79,6 @@ const ModalWindow = ({addHotdogToState}) => {
                        e => setHotdogData({
                          ...hotdogData,
                          description: e.target.value
-                       })}/>
-              <input className="modal-input"
-                     placeholder="Image"
-                     type="text"
-                     value={hotdogData.photoUrl}
-                     onChange={
-                       e => setHotdogData({
-                         ...hotdogData,
-                         photoUrl: e.target.value
                        })}/>
             </div>
             <div className="modal-footer">
