@@ -3,9 +3,10 @@ import './Main.css';
 import HotdogItem from "../Hotdog-item/Hotdog-item";
 import ModalWindow from "../Modal-window/Modal-window";
 
-const Main = () => {
+const Main = ({modalFlag, setModalFlag}) => {
 
   const [hotdogsList, setHotdogsList] = useState([]);
+
 
   const getHotdogsList = async () => {
     try {
@@ -40,7 +41,6 @@ const Main = () => {
     getHotdogsList();
   }, []);
 
-
   return (
     <main>
       <h1>All hot-dogs</h1>
@@ -52,7 +52,7 @@ const Main = () => {
                       setHotdogsList={setHotdogsList}
                       setItemValue={setItemValue}
           />))}
-        <ModalWindow addHotdogToState={addHotdogToState}/>
+        {modalFlag && <ModalWindow setModalFlag={setModalFlag} addHotdogToState={addHotdogToState}/>}
       </section>
     </main>
   )

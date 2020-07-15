@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "./Modal-window.css"
 
-const ModalWindow = ({addHotdogToState}) => {
+const ModalWindow = ({setModalFlag,addHotdogToState}) => {
 
   const url = "https://we-are-the-future-test-server.herokuapp.com/hotdogs";
 
@@ -17,7 +17,7 @@ const ModalWindow = ({addHotdogToState}) => {
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
-      const body = { ...hotdogData };
+      const body = {...hotdogData};
       const response = await fetch(url, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -25,70 +25,88 @@ const ModalWindow = ({addHotdogToState}) => {
       });
 
       addHotdogToState(hotdogData);
-      window.location = 'https://lessgrits.github.io/test-client/';
-
+      setModalFlag(false)
     } catch (error) {
       console.error(error);
     }
   };
 
-  return (
-    <div className="modal fade" id="myModal">
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
+  const checkImgValidate = src => {
+    const img = new Image();
+    let flag = false;
+    img.onload = () => {
+      console.log('yes');
 
-          <form onSubmit={e => onSubmitForm(e)}>
-            <div className="modal-header">
-              <h4 className="modal-title">Add new hot-dog</h4>
-            </div>
-            <div className="modal-body">
-              <input className="modal-input"
-                     placeholder="Image"
-                     type="text"
-                     value={hotdogData.photoUrl}
-                     onChange={
-                       e => setHotdogData({
-                         ...hotdogData,
-                         photoUrl: e.target.value
-                       })}/>
-              <input className="modal-input"
-                     required
-                     placeholder="Name"
-                     type="text"
-                     value={hotdogData.name}
-                     onChange={
-                       e => setHotdogData({
-                         ...hotdogData,
-                         name: e.target.value
-                       })}/>
-              <input className="modal-input"
-                     required
-                     placeholder="Price"
-                     type="number"
-                     value={hotdogData.price}
-                     onChange={
-                       e => setHotdogData({
-                         ...hotdogData,
-                         price: e.target.value
-                       })}/>
-              <input className="modal-input"
-                     placeholder="Description"
-                     type="text"
-                     value={hotdogData.description}
-                     onChange={
-                       e => setHotdogData({
-                         ...hotdogData,
-                         description: e.target.value
-                       })}/>
-            </div>
-            <div className="modal-footer">
-              <button type="submit" className="btn  modal-btn"  >Add</button>
-              <button type="button" className="btn modal-btn" data-dismiss="modal">Close</button>
-            </div>
-          </form>
-        </div>
+    };
+    img.onerror = () => console.log('no');
+    img.src = src;
+  };
+
+  const validate = ({name, price, photoUrl}) => {
+    // const validateImgSrc = checkImgValidate(photoUrl);
+    checkImgValidate(photoUrl);
+    const requireFields = !(name && price);
+
+    return requireFields
+  };
+
+
+  return (
+    <>
+      <div className="modal-background" onClick={()=>setModalFlag(false)}>
       </div>
-    </div>
+      <div className="modal-content">
+        <form onSubmit={onSubmitForm}>
+          <div className="modal-header">
+            <h4 className="modal-title">Add new hot-dog</h4>
+          </div>
+          <div className="modal-body">
+            <input className="modal-input"
+                   placeholder="Image"
+                   type="text"
+                   value={hotdogData.photoUrl}
+                   onChange={
+                     e => setHotdogData({
+                       ...hotdogData,
+                       photoUrl: e.target.value
+                     })}/>
+            <input className="modal-input"
+                   required
+                   placeholder="Name"
+                   type="text"
+                   value={hotdogData.name}
+                   onChange={
+                     e => setHotdogData({
+                       ...hotdogData,
+                       name: e.target.value
+                     })}/>
+            <input className="modal-input"
+                   required
+                   placeholder="Price"
+                   type="number"
+                   value={hotdogData.price}
+                   onChange={
+                     e => setHotdogData({
+                       ...hotdogData,
+                       price: e.target.value
+                     })}/>
+            <input className="modal-input"
+                   placeholder="Description"
+                   type="text"
+                   value={hotdogData.description}
+                   onChange={
+                     e => setHotdogData({
+                       ...hotdogData,
+                       description: e.target.value
+                     })}/>
+          </div>
+          <div className="modal-footer">
+            <button type="submit" className="modal-btn" disabled={validate(hotdogData)}>Add</button>
+            <button type="button" onClick={()=>setModalFlag(false)} className="modal-btn" >Close</button>
+          </div>
+        </form>
+      </div>
+    </>
   )
 };
 
