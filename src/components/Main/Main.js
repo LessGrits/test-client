@@ -2,58 +2,54 @@ import React, {useEffect, useState} from "react";
 import './Main.css';
 import HotdogItem from "../Hotdog-item/Hotdog-item";
 import ModalWindow from "../Modal-window/Modal-window";
-
-const Main = ({modalFlag, setModalFlag}) => {
-
-  const [hotdogsList, setHotdogsList] = useState([]);
+import {useDispatch, useSelector} from "react-redux";
+import {fetchHotdogs} from "../../redux/actions";
 
 
-  const getHotdogsList = async () => {
-    try {
-      const response = await fetch("https://we-are-the-future-test-server.herokuapp.com/hotdogs");
-      const jsonData = await response.json();
-      setHotdogsList(jsonData)
-    } catch (e) {
-      console.error(e);
-    }
-  };
+const Main = () => {
+  const dispatch = useDispatch();
+  const hotdogsList = useSelector(state => state.hotdogs.hotdogs);
+  const loading = useSelector(state => state.app.loading);
+  const modal = useSelector(state => state.app.modalWindow);
 
-  const deleteHotdogFromState = (id) => {
-    setHotdogsList(hotdogsList.filter(hotdog => hotdog.hotdog_id !== id));
-    console.log(`Deleted hotdog by id ${ id }`)
-  };
-
-  const addHotdogToState = (item) => {
-    setHotdogsList([...hotdogsList, item]);
-    console.log(`Added hotdog ${JSON.stringify(item)}`)
-  };
-
-  const setItemValue = (oldItem, itemWithNewValue) => {
-    const index = hotdogsList.indexOf(oldItem);
-    const itemsBefore = hotdogsList.slice(0, index);
-    const itemsAfter = hotdogsList.slice(index + 1);
-    const newList = [...itemsBefore, itemWithNewValue, ...itemsAfter];
-    setHotdogsList([...newList]);
-    console.log(`Setted new value ${JSON.stringify(itemWithNewValue)}`)
-  };
+  const [imageValidate, setImageValidate] = useState(false);
 
   useEffect(() => {
-    getHotdogsList();
+    dispatch(fetchHotdogs())
   }, []);
+
+  const checkImgValidate = src => {
+    // console.log(src);
+    const img = new Image();
+    img.onload = () => setImageValidate(true);
+    img.onerror = () => setImageValidate(false);
+    img.src = src;
+
+    return imageValidate
+  };
+
+  const checkValidate = ({name, price, photo_url}) => {
+    console.log(name, price, photo_url);
+    console.log(checkImgValidate(photo_url));
+    const validateImgSrc = checkImgValidate(photo_url);
+    const requireFields = !(validateImgSrc && name && price);
+    return requireFields
+  };
 
   return (
     <main>
-      <h1>All hot-dogs</h1>
-      <section className="main-content">
-        {hotdogsList.map((data) => (
-          <HotdogItem data={data}
-                      key={data.hotdog_id}
-                      deleteHotdogFromState={deleteHotdogFromState}
-                      setHotdogsList={setHotdogsList}
-                      setItemValue={setItemValue}
-          />))}
-        {modalFlag && <ModalWindow setModalFlag={setModalFlag} addHotdogToState={addHotdogToState}/>}
-      </section>
+      {loading ? <div className="loader"></div> :
+        <>
+          <h1>All hot-dogs</h1>
+          <section className="main-content">
+            {hotdogsList.map((data) => (
+              <HotdogItem
+                data={data}
+                checkValidate={checkValidate}
+                key={data.hotdog_id}/>))}
+            {modal && <ModalWindow checkValidate={checkValidate} />}
+          </section>
+        </>}
     </main>
   )
 };

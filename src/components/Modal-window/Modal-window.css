@@ -45,7 +45,7 @@
     color: #fff;
     margin: 0 10px;
 }
-.modal-btn:disabled{
-    background:rgba(0,0,0,0.3);
-    cursor: not-allowed;
+
+.modal-input .invalid{
+    border: 1px solid tomato;
 }

@@ -1,52 +1,36 @@
 import React, {useState} from "react";
 import './Hotdog-item.css';
+import {useDispatch} from "react-redux";
+import {deleteHotdog, updateHotdog} from "../../redux/actions";
 
-const HotdogItem = ({data: hotdogData, setItemValue, deleteHotdogFromState,}) => {
-
+const HotdogItem = ({data: hotdogData, checkValidate}) => {
   const [editMode, changeEditMode] = useState(false);
-
-  const {name, description, price, photo_url: photoUrl, hotdog_id: id} = hotdogData;
-
-  const url = "https://we-are-the-future-test-server.herokuapp.com/hotdogs";
-
-  const defaultPhoto = "https://vignette.wikia.nocookie.net/edopedia/images/5/5e/%D0%A5%D0%BE%D1%82_%D0%B4%D0%BE%D0%B3.jpg/revision/latest?cb=20170806182648&path-prefix=ru";
+  const dispatch = useDispatch();
+  const [hotdog, setHotdog] = useState(hotdogData);
+  const {name, description, price, photo_url, hotdog_id} = hotdog;
 
   const setEditMode = () => {
     changeEditMode(!editMode)
   };
 
-  const deleteHotdog = async (id) => {
-    try {
-      const response = await fetch(`${url}/${id}`, {
-        method: "DELETE"
-      });
-      deleteHotdogFromState(id);
-    } catch (error) {
-      console.error(error);
-    }
+  const changeInputHandler = event => {
+    event.persist();
+    setHotdog(prev => ({
+      ...prev,
+      [event.target.name]: event.target.value
+    }));
   };
 
-  const updateHotdog = async (event, id) => {
+  const sendUpdateData = async (hotdog, id, event) => {
     event.preventDefault();
-    try {
-      const body = {...hotdogData};
-      const response = await fetch(`${url}/${id}`,{
-        method: "PUT",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(body)
-      });
-
-      setEditMode();
-    } catch (error) {
-      console.error(error)
-    }
+    dispatch(updateHotdog(hotdog, id));
+    setEditMode();
   };
-
 
   const staticData = (
     <div className="hotdog">
       <div className="hotdog__img">
-        <img src={photoUrl || defaultPhoto}
+        <img src={photo_url}
              alt="hotdog"/>
       </div>
       <h3 className="hotdog__name">
@@ -59,29 +43,28 @@ const HotdogItem = ({data: hotdogData, setItemValue, deleteHotdogFromState,}) =>
       <button className="hotdog__btn" onClick={setEditMode}>
         Edit
       </button>
-
     </div>
   );
 
   const editableData = (
     <div className="hotdog">
       <div className="hotdog__img">
-        <img src={photoUrl || defaultPhoto} alt="hotdogPhoto"/>
+        <img src={photo_url} alt="hotdogPhoto"/>
       </div>
-      <form className="edit-form" onSubmit={e => updateHotdog(e, id)}>
-        <input type="text"  value={photoUrl}
-               onChange={e => setItemValue(hotdogData, {...hotdogData, photo_url: e.target.value})}/>
-        <input type="text" required value={name}
-               onChange={e => setItemValue(hotdogData, {...hotdogData, name: e.target.value})}/>
-        <input type="text" required value={price}
-               onChange={e => setItemValue(hotdogData, {...hotdogData, price: e.target.value})}/>
-        <input type="text" value={description}
-               onChange={e => setItemValue(hotdogData, {...hotdogData, description: e.target.value})}/>
-        <button type="submit" className="hotdog__btn">
+      <form className="edit-form" onSubmit={e => sendUpdateData(hotdog, hotdog_id, e)}>
+        <input type="text" name="photo_url" value={photo_url}
+               onChange={changeInputHandler}/>
+        <input type="text" name="name" required value={name}
+               onChange={changeInputHandler}/>
+        <input type="number" name="price" required value={price}
+               onChange={changeInputHandler}/>
+        <input type="text" name="description" value={description}
+               onChange={changeInputHandler}/>
+        <button type="submit"  className="hotdog__btn">
           Upgrade
         </button>
         <button type="button" className="hotdog__btn"
-                onClick={() => deleteHotdog(id)}>
+                onClick={() => dispatch(deleteHotdog(hotdog_id))}>
           Delete
         </button>
       </form>
